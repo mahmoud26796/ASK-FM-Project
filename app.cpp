@@ -1,3 +1,5 @@
+#include <format>
+#include <string>
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -20,24 +22,8 @@ struct User
     }
 };
 
-// Puts the user information in our simulated db
-void user_info_to_database()
-{
-}
-
-// read user data from the db
-void read_user_data()
-{
-    string user;
-    ifstream Mystream("db.txt");
-    string userName;
-    while (getline(Mystream, user))
-        userName;
-    Mystream.close();
-}
-
 // take the info from the user
-void login()
+User login()
 {
     string first_name;
     string second_name;
@@ -59,11 +45,40 @@ void login()
         break;
     }
 
-    cout << "user: " + first_name + " " + second_name + " Logged In Successfuly" << endl;
+    User u;
+    u.id = "3";
+    u.first_name = first_name;
+    u.second_name = second_name;
+    u.email = email;
+    u.password = password;
+    return u;
 }
+
+// Puts the user information in our simulated db
+void user_info_to_database()
+{
+    User u = login();
+    ofstream MyFile("db.txt");
+    string dbJson = "{ _id : " + u.id + " name : " + u.first_name + u.second_name + " email : " + u.email + "password : " + to_string(u.password) + "}";
+    MyFile << dbJson;
+
+    MyFile.close();
+}
+
+// read user data from the db
+void read_user_data()
+{
+    string user;
+    ifstream Mystream("db.txt");
+    string userName;
+    while (getline(Mystream, user))
+        userName;
+    Mystream.close();
+}
+
 int main()
 {
-    // login();
-    read_user_data();
+    user_info_to_database();
+    // read_user_data();
     return 0;
 }
