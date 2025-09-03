@@ -59,26 +59,39 @@ void user_info_to_database()
 {
     User u = login();
     ofstream MyFile("db.txt");
-    string dbJson = "{ _id : " + u.id + " name : " + u.first_name + u.second_name + " email : " + u.email + "password : " + to_string(u.password) + "}";
-    MyFile << dbJson;
-
-    MyFile.close();
+    if (MyFile.is_open())
+    {
+        string colon = ",";
+        string dbJson = "{ _id : " + u.id + colon + " name : " + u.first_name + ' ' + u.second_name + colon + " email : " + u.email + colon + " password : " + to_string(u.password) + " }";
+        MyFile << dbJson;
+        MyFile.close();
+    }
+    else
+    {
+        cerr << "Can not Open File";
+    }
 }
 
 // read user data from the db
 void read_user_data()
 {
     string user;
-    ifstream Mystream("db.txt");
-    string userName;
-    while (getline(Mystream, user))
-        userName;
-    Mystream.close();
+    ifstream MyFile("db.txt");
+    if (MyFile.is_open())
+    {
+        while (getline(MyFile, user))
+            cout << user << endl;
+        MyFile.close();
+    }
+    else
+    {
+        cerr << "Error: Can not open file\n";
+    }
 }
 
 int main()
 {
     user_info_to_database();
-    // read_user_data();
+    read_user_data();
     return 0;
 }
