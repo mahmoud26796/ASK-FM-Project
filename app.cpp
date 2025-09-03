@@ -1,3 +1,4 @@
+#include <regex>
 #include <format>
 #include <string>
 #include <iostream>
@@ -22,6 +23,17 @@ struct User
     }
 };
 
+// check if the user mail is valid
+bool is_email_valid(string email)
+{
+    regex pattern("[a-zA_Z0-9_\\-\\+]+@(gmail|yahoo|hotmail)\\.(org|com|net|io)");
+
+    if (regex_match(email, pattern))
+    {
+        return true;
+    }
+    return false;
+}
 // take the info from the user
 User login()
 {
@@ -32,16 +44,26 @@ User login()
     int password_confirm;
     while (true)
     {
-        cout << "Please Enter Your First Name: " << endl;
+        cout << "Please Enter Your First Name: ";
         cin >> first_name;
-        cout << "Please Enter Your Second Name: " << endl;
+        cout << "Please Enter Your Second Name: ";
         cin >> second_name;
-        cout << "Please Enter Your Email Address: " << endl;
+        cout << "Please Enter Your Email Address: ";
         cin >> email;
-        cout << "Please Create A New Password: " << endl;
+        while (is_email_valid(email) == false)
+        {
+            cerr << "Email Address is Not Valid Please Re-write a Valid Email Address: ";
+            cin >> email;
+        }
+        cout << "Please Create A New Password: ";
         cin >> password;
-        cout << "Please Confirm Your Password: " << endl;
+        cout << "Please Confirm Your Password: ";
         cin >> password_confirm;
+        while (password != password_confirm)
+        {
+            cerr << "Password Confirm Incorrect Please Re-Confirm Your Password Correctly: ";
+            cin >> password_confirm;
+        }
         break;
     }
 
